@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>OpenLayers Example</title>
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    </head>
+    <body>
+      <div style="width:100%; height:100%" id="map"></div>
+	</body>
+	
+  	<script type="text/javascript">
+  	var map = new OpenLayers.Map('map');
+	
+  	var wms_layer = new OpenLayers.Layer.WMS(
+  		"openlayer wms",
+  		"http://vmap0.tiles.osgeo.org/wms/vmap0",
+  		{'layers':'basic'}
+  	);
+	
+	//format
+	var geojson_format = new OpenLayers.Format.GeoJSON();
+	
+	//protocol
+	var http_protocol = new OpenLayers.Protocol.HTTP({
+		url: "files/two.json",
+		format: geojson_format
+	});
+	
+	//strategy
+	var fixed_strategy = new OpenLayers.Strategy.Fixed();
+	
+	var vector_layer = new OpenLayers.Layer.Vector("vector layer", {
+		protocol: http_protocol,
+		strategies: [fixed_strategy]
+	});
+
+	map.addLayers([wms_layer, vector_layer]);
+	map.setCenter(new OpenLayers.LonLat(33.678176, -116.242568), 3);
+  	</script>
+    
+</html>

@@ -1,0 +1,35 @@
+<html>
+<head>
+  <title>OpenLayers Example</title>
+    <script src="lib/OpenLayers.js"></script>
+	<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+    </head>
+    <body>
+      <div style="width:100%; height:100%" id="map"></div>
+  	<script type="text/javascript">
+	
+  	var map = new OpenLayers.Map("map");
+	
+  	var gmap_layer = new OpenLayers.Layer.Google("google map layer");
+	
+	var vector_layer = new OpenLayers.Layer.Vector("vector layer");
+	var point = new OpenLayers.Geometry.Point(33.678176, -116.242568);
+	var point_feature = new OpenLayers.Feature.Vector(point,{
+		id:123
+	});
+	
+
+	var point2 = new OpenLayers.Geometry.Point(-72, 42);
+	point2.id="geometry-123";
+	
+	var point_feature2 = new OpenLayers.Feature.Vector(point2,{
+		id:123
+	});
+	
+	vector_layer.addFeatures([point_feature, point_feature2]);
+	
+	map.addLayers([gmap_layer, vector_layer])	
+	map.setCenter(new OpenLayers.LonLat(33.678176, -116.242568), 3);
+  	</script>
+    </body>
+</html>

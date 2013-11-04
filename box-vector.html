@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <title>OpenLayers Boxes Vector Example</title>
+        <link rel="stylesheet" href="theme/default/style.css" type="text/css">
+        <link rel="stylesheet" href="style.css" type="text/css">
+		<script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
+        <script src="lib/OpenLayers.js"></script>
+        <script type="text/javascript">
+            var box_extents = [
+                [-10, 50, 5, 60],
+                [-75, 41, -71, 44],
+                [-122.6, 37.6, -122.3, 37.9]
+            ];
+            var map;
+            function init(){
+			    
+                map = new OpenLayers.Map('map');
+
+                var ol_wms = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+                    "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'} );
+					              
+				var boxes  = new OpenLayers.Layer.Vector( "Boxes" );
+
+			    for(var i=0; i<100; i++) { 
+			  	  for(var j=0; j<100; j++) {
+					  bounds = new OpenLayers.Bounds();
+					  bounds.extend(new OpenLayers.LonLat(-10-i*0.014, 50-j*0.014));
+					  bounds.extend(new OpenLayers.LonLat(5-i*0.014, 60-j*0.014));
+                	  box = new OpenLayers.Feature.Vector(bounds.toGeometry());
+                	  boxes.addFeatures(box);
+				  }
+			    }
+				
+				map.addLayers([ol_wms, boxes]);
+                
+				map.addControl(new OpenLayers.Control.LayerSwitcher());
+                var sf = new OpenLayers.Control.SelectFeature(boxes);
+                map.addControl(sf);
+                sf.activate();
+                map.zoomToMaxExtent();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <h1 id="title">Boxes Example Vector</h1>
+
+        <div id="tags">
+            box, vector, annotation, light
+        </div>
+
+        <p id="shortdesc">
+            Demonstrate marker and box type annotations on a map.
+        </p>
+        
+        <div id="map" class="smallmap"></div>
+
+        <div id="docs"></div>
+    </body>
+</html>
+

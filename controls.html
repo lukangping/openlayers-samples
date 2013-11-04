@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title>OpenLayers Example</title>
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    </head>
+    <body>
+      <div style="width:100%; height:100%" id="map"></div>
+	</body>
+	
+  	<script type="text/javascript">
+  	//1. create map viewer
+  	var map = new OpenLayers.Map('map');
+	
+	
+  	//2. add a wms layer to the map, you can find all the layer in api doc.
+  	var wms = new OpenLayers.Layer.WMS(
+  		"openlayer wms",
+  		"http://vmap0.tiles.osgeo.org/wms/vmap0",
+  		{'layers':'basic'}
+  	);
+  	map.addLayer(wms);
+	
+	//add editingtoolbar control
+	var vector_layer = new OpenLayers.Layer.Vector("vector layer");
+	var editing_control = new OpenLayers.Control.EditingToolbar(vector_layer);
+	
+	//add mouseposition control
+	var mposition_control = new OpenLayers.Control.MousePosition();
+	
+	//add overview control
+	var overview_control = new OpenLayers.Control.OverviewMap();
+
+	map.addControls([editing_control, mposition_control,overview_control]);
+	
+  	//3. to display the map, center and zoom level must be set.
+  	// map.zoomToMaxExtent();
+	map.setCenter(new OpenLayers.LonLat(108.50520, 33.242568), 4);
+  	</script>
+    
+</html>

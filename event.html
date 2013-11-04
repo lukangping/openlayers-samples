@@ -1,0 +1,56 @@
+<html>
+<head>
+  <title>OpenLayers Example</title>
+    <script src="http://openlayers.org/api/OpenLayers.js"></script>
+    </head>
+    <body>
+      <div style="width:100%; height:100%" id="map"></div>
+	</body>
+	
+  	<script type="text/javascript">
+  	var map = new OpenLayers.Map('map');
+	
+  	var wms_layer = new OpenLayers.Layer.WMS(
+  		"openlayer wms",
+  		"http://vmap0.tiles.osgeo.org/wms/vmap0",
+  		{'layers':'basic'}
+  	);
+	
+	var vector_layer = new OpenLayers.Layer.Vector("vector layer");
+  	map.addLayers([wms_layer, vector_layer]);
+
+
+	//geometry
+	var linearring_geometry = new OpenLayers.Geometry.LinearRing([
+		new OpenLayers.Geometry.Point(-9.49219,12.2168),
+		new OpenLayers.Geometry.Point(1.49219,12.2168),
+		new OpenLayers.Geometry.Point(1.49219,2.2168),
+		new OpenLayers.Geometry.Point(-9.49219,2.2168)
+	]);
+	
+	var polygon_geometry = new OpenLayers.Geometry.Polygon([linearring_geometry]);
+	
+	//feature
+	var polygon_feature = new OpenLayers.Feature.Vector(polygon_geometry, {
+		'description': 'example polygon feature'
+	})
+	
+	//add to vector layer
+	vector_layer.addFeatures([polygon_feature]);
+	
+	//selectFeature control
+    var selectFeature_control =	new OpenLayers.Control.SelectFeature(vector_layer);
+	map.addControl(selectFeature_control);
+	selectFeature_control.activate();
+	
+	function handleFeatureSelected(event){
+		console.log("feauture is selected.")
+		console.log(event);
+	};
+	
+	vector_layer.events.register('featureselected',this,handleFeatureSelected);
+
+	map.setCenter(new OpenLayers.LonLat(33.678176, -116.242568), 3);
+  	</script>
+    
+</html>
